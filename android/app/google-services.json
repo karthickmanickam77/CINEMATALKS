@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "574577308795",
+    "project_id": "cinetalks-review",
+    "storage_bucket": "cinetalks-review.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574577308795:android:c704defdb8160029305ede",
+        "android_client_info": {
+          "package_name": "com.example.cinematalks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574577308795-gu5pq6619t9c63hk4h6afudo7lfg23el.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cinematalks",
+            "certificate_hash": "9c86d3eaa0df494debe8a8c6bb25425d0e4b59ca"
+          }
+        },
+        {
+          "client_id": "574577308795-nmfaes9rj83nup56crj7aoj8l7q8q6qi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOLq05sZ4XRXILyTxPOGxFzid2otem2R4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574577308795-nmfaes9rj83nup56crj7aoj8l7q8q6qi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
