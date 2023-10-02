@@ -47,6 +47,9 @@ class _MyAppState extends State<MyApp> {
             public: movie['public'],
             google: movie['google'],
             li: movie['li'],
+            userLiked: true,
+            likes: movie['likes'],
+            cast: movie['cast'],
           ),
         )
         .toList();
@@ -149,6 +152,7 @@ class _MyAppState extends State<MyApp> {
                                         public: movieItems[index].public,
                                         google: movieItems[index].google,
                                         li: movieItems[index].li,
+                                        cast: movieItems[index].cast,
                                       )));
                             },
                           ),

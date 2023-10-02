@@ -1,27 +1,15 @@
-import 'package:cinematalks/About.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'SlideTrans.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'main2.dart';
-import 'ChatRoom.dart';
 
 class Mdetails extends StatefulWidget {
-  final String name,
-      image,
-      desc,
-      imdb,
-      tr,
-      pr,
-      kr,
-      toi,
-      public,
-      google,
-      li,
-      cast;
+  final String name, image, desc, imdb, tr, pr, kr, toi, public, google, li;
   const Mdetails({
-    super.key,
+    Key? key,
     required this.name,
     required this.image,
     required this.desc,
@@ -33,8 +21,7 @@ class Mdetails extends StatefulWidget {
     required this.public,
     required this.google,
     required this.li,
-    required this.cast,
-  });
+  }) : super(key: key);
 
   @override
   State<Mdetails> createState() => _MdetailsState();
@@ -42,63 +29,51 @@ class Mdetails extends StatefulWidget {
 
 class _MdetailsState extends State<Mdetails> {
   YoutubePlayerController? _controller;
-  bool isFullScreen = false;
+
   @override
   void initState() {
     super.initState();
-    var videoId = YoutubePlayer.convertUrlToId(widget.li);
+    var videoId = YoutubePlayer.convertUrlToId(widget.li) ?? '';
     _controller = YoutubePlayerController(
-      initialVideoId: videoId!,
+      initialVideoId: videoId,
       flags: const YoutubePlayerFlags(
         autoPlay: false,
         mute: false,
         isLive: false,
-        forceHD: true,
-        controlsVisibleAtStart: true,
-        hideControls: false,
       ),
-    );
+    )..addListener(_videoPlayerListener);
   }
 
-  @override
-  void dispose() {
-    // Dispose of the YoutubePlayerController to release resources
-    _controller!.dispose();
-
-    super.dispose();
+  void _videoPlayerListener() {
+    if (_controller!.value.isFullScreen) {
+      SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
+    } else {
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    }
   }
 
   double value = 0;
   double opinion = 0;
-  double decide(String descision) {
+  double decide(String decision) {
     double rating = 0;
-    //double percent = 0;
-    if (descision == 'Very Good') {
+    if (decision == 'Very Good') {
       rating = 0.8;
-    } else if (descision == 'Excellent') {
+    } else if (decision == 'Excellent') {
       rating = 1;
-    } else if (descision == 'Impressive') {
-      rating = 0.9;
-    } else if (descision == 'Good') {
+    } else if (decision == 'Good' || decision == 'Average') {
       rating = 0.6;
-    } else if (descision == 'Satisfied') {
-      rating = 0.7;
-    } else if (descision == 'Average') {
-      rating = 0.5;
-    } else if (descision == 'Okay') {
+    } else if (decision == 'Okay' || decision == '1 time') {
       rating = 0.4;
-    } else if (descision == '1 time') {
-      rating = 0.3;
-    } else if (descision == 'Bad') {
+    } else if (decision == 'Bad') {
       rating = 0.2;
-    } else if (descision == 'Waste') {
+    } else if (decision == 'Waste') {
       rating = 0.1;
     }
-    //percent = rating * 100;
     return rating;
   }
 
   late double perc = decide(widget.public) * 100;
+
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
@@ -206,61 +181,75 @@ class _MdetailsState extends State<Mdetails> {
               ),
             ),
             child: ListView(
-              padding: EdgeInsets.zero,
+              padding: const EdgeInsets.all(0),
               children: <Widget>[
-                const SizedBox(height: 10),
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Colors.white54, Colors.white54],
-                    ),
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 2,
-                        offset: const Offset(2, 5),
+                const SizedBox(
+                  height: 10,
+                ),
+                Flexible(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [
+                          Colors.white54,
+                          Colors.white54,
+                        ],
                       ),
-                    ],
-                  ),
-                  child: UserAccountsDrawerHeader(
-                    accountName: Text(
-                      user.displayName ?? 'AUDIENCE',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
-                        fontSize: 20,
-                        fontFamily: 'KanitBlack',
-                        color: Colors.white,
-                      ),
+                      //color: Color(0xff21E1B0).withOpacity(0.5),
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          offset: const Offset(2, 5),
+                        ),
+                      ],
                     ),
-                    accountEmail: Text(
-                      "${user.email}",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
-                        fontSize: 15,
-                        fontFamily: 'KanitBlack',
-                        color: Colors.black45,
-                      ),
-                    ),
-                    currentAccountPicture: CircleAvatar(
-                      backgroundImage: user.photoURL != null
-                          ? NetworkImage(user.photoURL!)
-                          : const AssetImage('lib/avatar.png')
-                              as ImageProvider<Object>?,
-                    ),
-                    decoration: const BoxDecoration(
-                      color: Colors.transparent,
-                      image: DecorationImage(
-                        image: AssetImage('lib/cover.jpg'),
-                        fit: BoxFit.fill,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 0.0),
+                      child: UserAccountsDrawerHeader(
+                        accountName: Text(
+                          "${user.displayName}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.5,
+                            fontSize: 20,
+                            fontFamily: 'KanitBlack',
+                            color: Colors.white,
+                          ),
+                        ),
+                        accountEmail: Text(
+                          "${user.email}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.5,
+                            fontSize: 15,
+                            fontFamily: 'KanitBlack',
+                            color: Colors.black45,
+                          ),
+                        ),
+                        currentAccountPicture: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            user.photoURL!,
+                          ),
+                        ),
+                        decoration: const BoxDecoration(
+                          color: Colors.transparent,
+                          image: DecorationImage(
+                            image: AssetImage(
+                              'lib/cover.jpg',
+                            ),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(
+                  height: 10,
+                ),
                 ListTile(
                   title: const Text(
                     "Home",
@@ -280,58 +269,14 @@ class _MdetailsState extends State<Mdetails> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MyAppMain()),
+                        builder: (context) => const MyAppMain(),
+                      ),
                     );
                   },
                 ),
-                const SizedBox(height: 8),
-                ListTile(
-                  title: const Text(
-                    "Chat",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5,
-                      fontSize: 17,
-                      fontFamily: 'KanitBlack',
-                      color: Colors.white,
-                    ),
-                  ),
-                  leading: const Icon(
-                    Icons.chat,
-                    color: Colors.white,
-                  ),
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ChatScreen()),
-                    );
-                  },
+                const SizedBox(
+                  height: 10,
                 ),
-                const SizedBox(height: 8),
-                ListTile(
-                  title: const Text(
-                    "About",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5,
-                      fontSize: 17,
-                      fontFamily: 'KanitBlack',
-                      color: Colors.white,
-                    ),
-                  ),
-                  leading: const Icon(
-                    Icons.info,
-                    color: Colors.white,
-                  ),
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const about()),
-                    );
-                  },
-                ),
-                const SizedBox(height: 8),
                 ListTile(
                   title: const Text(
                     "Logout",
@@ -352,7 +297,8 @@ class _MdetailsState extends State<Mdetails> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MyAppMain()),
+                        builder: (context) => const MyAppMain(),
+                      ),
                     );
                   },
                 ),
@@ -385,55 +331,24 @@ class _MdetailsState extends State<Mdetails> {
                             Duration(microseconds: (0.9 * 1000000).round()),
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 5.0, top: 8),
-                              child: Text(
-                                'Story : ${widget.desc}',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'TitilliumWeb',
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5.0, top: 8),
+                          child: Text(
+                            'Story : ${widget.desc}',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'GentiumBookPlus',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white
-                                    .withOpacity(0.4), // Background color
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 5.0, top: 8),
-                                child: Text(
-                                  widget.cast.replaceAll(r'\n', '\n'),
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: 'TitilliumWeb',
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 14,
-                    ),
+                    const SizedBox(height: 14),
                     Column(
                       children: [
                         const Text(
@@ -550,21 +465,13 @@ class _MdetailsState extends State<Mdetails> {
                     Padding(
                       padding: const EdgeInsets.only(
                           top: 15.0, right: 5.0, left: 5.0, bottom: 10.0),
-                      child: SingleChildScrollView(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          height: 280,
-                          child: YoutubePlayer(
-                            controller: _controller!,
-                            showVideoProgressIndicator: true,
-                            progressIndicatorColor: Colors.amber,
-                            progressColors: const ProgressBarColors(
-                              playedColor: Colors.amber,
-                              handleColor: Colors.amberAccent,
-                            ),
-                          ),
+                      child: YoutubePlayer(
+                        controller: _controller!,
+                        showVideoProgressIndicator: true,
+                        progressIndicatorColor: Colors.amber,
+                        progressColors: const ProgressBarColors(
+                          playedColor: Colors.amber,
+                          handleColor: Colors.amberAccent,
                         ),
                       ),
                     ),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'Moviedetails.dart';
 
 class SlideTransitionImage extends StatefulWidget {
   final String imageUrl;
   final Duration duration;
 
-  SlideTransitionImage({required this.imageUrl, required this.duration});
+  const SlideTransitionImage({super.key, required this.imageUrl, required this.duration});
 
   @override
   _SlideTransitionImageState createState() => _SlideTransitionImageState();

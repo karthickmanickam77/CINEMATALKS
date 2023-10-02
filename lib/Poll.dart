@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'movies.dart';
-import 'package:cinematalks/ChatRoom.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'main2.dart';
 
@@ -45,6 +44,9 @@ class _PollState extends State<Poll> {
             public: movie['public'],
             google: movie['google'],
             li: movie['li'],
+            userLiked: movie['userLiked'],
+            likes: movie['likes'],
+            cast: movie['cast'],
           ),
         )
         .toList();
@@ -121,7 +123,7 @@ class _PollState extends State<Poll> {
           child: Material(
             elevation: 4.0,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -133,28 +135,28 @@ class _PollState extends State<Poll> {
                 ),
               ),
               child: ListView(
-                padding: EdgeInsets.all(0),
+                padding: const EdgeInsets.all(0),
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Flexible(
                     child: Container(
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           colors: [
                             Colors.white54,
                             Colors.white54,
                           ],
                         ),
                         //color: Color(0xff21E1B0).withOpacity(0.5),
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.2),
                             spreadRadius: 2,
                             blurRadius: 2,
-                            offset: Offset(2, 5),
+                            offset: const Offset(2, 5),
                           ),
                         ],
                       ),
@@ -163,7 +165,7 @@ class _PollState extends State<Poll> {
                         child: UserAccountsDrawerHeader(
                           accountName: Text(
                             "${user.displayName}",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.5,
                               fontSize: 20,
@@ -173,7 +175,7 @@ class _PollState extends State<Poll> {
                           ),
                           accountEmail: Text(
                             "${user.email}",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.5,
                               fontSize: 15,
@@ -186,7 +188,7 @@ class _PollState extends State<Poll> {
                               user.photoURL!,
                             ),
                           ),
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.transparent,
                             image: DecorationImage(
                               image: AssetImage(
@@ -200,7 +202,7 @@ class _PollState extends State<Poll> {
                     ),
                   ),
                   ListTile(
-                    title: Text(
+                    title: const Text(
                       "Home",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -210,19 +212,19 @@ class _PollState extends State<Poll> {
                         color: Colors.black,
                       ),
                     ),
-                    leading: Icon(
+                    leading: const Icon(
                       Icons.home_outlined,
                       color: Colors.black,
                     ),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MyAppMain()),
+                        MaterialPageRoute(builder: (context) => const MyAppMain()),
                       );
                     },
                   ),
                   ListTile(
-                    title: Text(
+                    title: const Text(
                       "Logout",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -232,7 +234,7 @@ class _PollState extends State<Poll> {
                         color: Colors.black,
                       ),
                     ),
-                    leading: Icon(
+                    leading: const Icon(
                       Icons.logout,
                       color: Colors.black,
                     ),
@@ -241,7 +243,7 @@ class _PollState extends State<Poll> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MyAppMain(),
+                          builder: (context) => const MyAppMain(),
                         ),
                       );
                     },
@@ -290,8 +292,8 @@ class _PollState extends State<Poll> {
                     ),
                   ),
                   subtitle: selectedIndex == index && selectedOption == 100
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
+                      ? const Padding(
+                          padding: EdgeInsets.only(top: 8.0),
                           child: Text(
                             "100%",
                             style: TextStyle(

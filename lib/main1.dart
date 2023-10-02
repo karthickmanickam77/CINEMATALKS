@@ -1,9 +1,11 @@
 import 'package:cinematalks/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'email.dart';
+import 'help.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +42,7 @@ class Gscreen extends StatelessWidget {
                     children: [
                       Column(
                         children: [
-                          Text(
+                          const Text(
                             'Welcome To Cinema Talks',
                             style: TextStyle(
                               fontSize: 25,
@@ -55,13 +57,13 @@ class Gscreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Container(
                             width: 300,
                             decoration: BoxDecoration(
-                              gradient: LinearGradient(
+                              gradient: const LinearGradient(
                                 colors: [
                                   Colors.white54,
                                   Colors.white54,
@@ -69,24 +71,52 @@ class Gscreen extends StatelessWidget {
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Center(
-                              child: Text(
-                                'Find Out Your Movie',
-                                style: TextStyle(
-                                  fontSize: 26,
-                                  fontFamily: 'Julee',
-                                  color: Colors.lightBlue,
-                                  shadows: <Shadow>[
-                                    Shadow(
-                                      offset: Offset(1.0, 1.0),
-                                      blurRadius: 1.0,
-                                      color: Colors.black,
-                                    ),
-                                  ],
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: Image.asset(
+                                    'lib/tape.png',
+                                    height: 30,
+                                    width: 60,
+                                  ),
                                 ),
-                              ),
+                                const Text(
+                                  'Find Out Your Movie',
+                                  style: TextStyle(
+                                    fontSize: 26,
+                                    fontFamily: 'Julee',
+                                    color: Colors.lightBlue,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                        offset: Offset(1.0, 1.0),
+                                        blurRadius: 1.0,
+                                        color: Colors.black,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Container(
+                              child: AnimatedTextKit(
+                                animatedTexts: [
+                                  TypewriterAnimatedText(
+                                    'CINEMA TALKS',
+                                    textStyle: const TextStyle(
+                                      fontSize: 25,
+                                      fontFamily: 'KanitBlack',
+                                      color: Colors.black,
+                                    ),
+                                    speed: const Duration(milliseconds: 200),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
                         ],
                       ),
                       Row(
@@ -97,7 +127,7 @@ class Gscreen extends StatelessWidget {
                             height: 140,
                             width: 50,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 17,
                           ),
                           Image.asset(
@@ -109,22 +139,61 @@ class Gscreen extends StatelessWidget {
                       ),
                       SizedBox(
                         width: 230,
-                        child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            onPrimary: Colors.black,
-                          ),
-                          icon: FaIcon(
-                            FontAwesomeIcons.google,
-                            color: Colors.redAccent,
-                          ),
-                          label: Text('Sign Up with Google'),
-                          onPressed: () {
-                            final provider = Provider.of<GoogleSignInProvider>(
-                                context,
-                                listen: false);
-                            provider.googleLogin();
-                          },
+                        child: Column(
+                          children: [
+                            ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.black,
+                                backgroundColor: Colors.white,
+                              ),
+                              icon: const FaIcon(
+                                FontAwesomeIcons.google,
+                                color: Colors.redAccent,
+                              ),
+                              label: const Text('Sign Up with Google'),
+                              onPressed: () {
+                                final provider =
+                                    Provider.of<GoogleSignInProvider>(context,
+                                        listen: false);
+                                provider.googleLogin();
+                              },
+                            ),
+                            ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.blue,
+                              ),
+                              icon: const FaIcon(
+                                FontAwesomeIcons.voicemail,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                // Navigate to your email/password login screen
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const EmailLoginPage(),
+                                ));
+                              },
+                              label: const Padding(
+                                padding: EdgeInsets.all(6.0),
+                                child: Text('Sign In with Email'),
+                              ),
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const InstructionsPage()),
+                                  );
+                                },
+                                child: const Text(
+                                  'Help',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ))
+                          ],
                         ),
                       ),
                     ],

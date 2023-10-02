@@ -22,6 +22,9 @@ class Movies {
     required this.public,
     required this.google,
     required this.li,
+    required this.userLiked,
+    required this.likes,
+    required this.cast,
   });
 
   String id;
@@ -36,6 +39,9 @@ class Movies {
   String public;
   String google;
   String li;
+  String cast;
+  bool userLiked;
+  int likes;
 
   factory Movies.fromJson(Map<String, dynamic> json) => Movies(
         id: json["id"],
@@ -50,6 +56,9 @@ class Movies {
         public: json["public"],
         google: json["google"],
         li: json["li"],
+        cast: json["cast"],
+        userLiked: json["userLiked"],
+        likes: json["likes"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -65,5 +74,8 @@ class Movies {
         "public": public,
         "google": google,
         "li": li,
+        "cast": cast,
+        "userLiked": userLiked,
+        "likes": likes,
       };
 }

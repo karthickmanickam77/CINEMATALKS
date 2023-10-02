@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 4.0.0
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -33,28 +33,34 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  google_fonts: ^3.0.1
-  cloud_firestore: ^4.3.1
-  percent_indicator: ^4.2.2
-  flutter_native_splash: ^2.2.17
+  cupertino_icons:
+  google_fonts:
+  cloud_firestore:
+  percent_indicator:
+  flutter_native_splash:
   google_sign_in:
   firebase_auth:
   font_awesome_flutter:
   provider:
-  youtube_player_flutter: ^8.1.2
+  youtube_player_flutter:
+  internet_connection_checker:
+  connectivity_plus:
+  animated_text_kit:
+  modal_progress_hud_nsn:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints:
+  url_launcher:
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -76,6 +82,10 @@ flutter:
     - lib/UU.png
     - lib/coupon.png
     - lib/chaplin.png
+    - lib/tape.png
+    - lib/TEAM_TechSquad.jpg
+    - lib/TEAM.png
+    - lib/avatar.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -114,6 +124,13 @@ flutter:
     - family: GentiumBookPlus
       fonts:
         - asset: fonts/GentiumBookPlus-Regular.ttf
+    - family: TiltPrism
+      fonts:
+            - asset: fonts/TiltPrism-Regular-VariableFont_XROT,YROT.ttf
+    - family: TitilliumWeb
+      fonts:
+            - asset: fonts/TitilliumWeb-Light.ttf
+
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
